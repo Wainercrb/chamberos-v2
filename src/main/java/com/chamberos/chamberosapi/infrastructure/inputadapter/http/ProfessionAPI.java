@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import com.chamberos.chamberosapi.domain.Profession;
 import com.chamberos.chamberosapi.infrastructure.inputport.ProfessionInputPort;
 
@@ -21,9 +23,9 @@ public class ProfessionAPI {
     @Autowired()
     ProfessionInputPort professionInputPort;
 
-    @PostMapping(value = "sae", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Profession create(@RequestBody Profession profession) {
-        return professionInputPort.save(profession);
+    @PostMapping(value = "create", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Profession> create(@RequestBody Profession profession) {
+        return new ResponseEntity<>(professionInputPort.save(profession), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "get", produces = MediaType.APPLICATION_JSON_VALUE)

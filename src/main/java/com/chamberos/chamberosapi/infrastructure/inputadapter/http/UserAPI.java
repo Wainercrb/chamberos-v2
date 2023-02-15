@@ -1,6 +1,8 @@
 package com.chamberos.chamberosapi.infrastructure.inputadapter.http;
 
 import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,16 +18,18 @@ import com.chamberos.chamberosapi.infrastructure.inputport.UserInputPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 
 @RestController
 @RequestMapping("user")
+@Validated
 public class UserAPI {
     @Autowired()
     UserInputPort customerInputPort;
 
     @PostMapping(value = "register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public User create(@RequestBody User user) {
-        return customerInputPort.register(user);
+    public ResponseEntity<User> create(@Valid @RequestBody User user) {
+        return new ResponseEntity<>(customerInputPort.register(user), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -38,17 +42,20 @@ public class UserAPI {
     }
 
     @GetMapping(value = "get", produces = MediaType.APPLICATION_JSON_VALUE)
-    public User get(@RequestParam String userId) {
+    public User get(
+            @RequestParam @NotNull(message = "Parameter 'userId' is required") String userId) {
+
         return customerInputPort.getById(userId);
     }
 
     @GetMapping(value = "get-all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getAll(
+            @RequestParam(defaultValue = "") String fullName,
             @RequestParam(defaultValue = "fullName") String sortKey,
             @RequestParam(defaultValue = "asc") String sortDirection,
-            @RequestParam String fullName,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
+
         Sort.Direction direction = sortDirection == "asc" ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, "fullName");
         Pageable pageable = PageRequest.of(page, size, sort);
@@ -56,8 +63,13 @@ public class UserAPI {
     }
 
     @GetMapping(value = "get-location-near", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<User> findByLocationNear(@RequestParam double latitude, double longitude, double radiusInKilometers) {
-        return customerInputPort.findByLocationNear(latitude, longitude, radiusInKilometers);
+    public ResponseEntity<?> findByLocationNear(
+            @RequestParam @NotNull(message = "Parameter 'latitude' is required") double latitude,
+            @RequestParam @NotNull(message = "Parameter 'longitude' is required") double longitude,
+            @RequestParam @NotNull(message = "Parameter 'radiusInKilometers' is required") double radiusInKilometers) {
+
+        return new ResponseEntity<>(customerInputPort.findByLocationNear(latitude, longitude, radiusInKilometers),
+                HttpStatus.OK);
     }
 
 }
