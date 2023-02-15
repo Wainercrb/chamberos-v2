@@ -25,6 +25,6 @@ public class UserUseCase implements UserInputPort {
 
     @Override
     public List<User> getAll() {
-        return userRepository.getAll();
+        return userRepository.findAll();
     }    
 }
