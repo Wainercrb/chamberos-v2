@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ee7c7f65-3d66-45d2-a2d0-6953c5ee9c08",
+		"_postman_id": "50cb5501-16e7-4730-9a63-492d6ce10e12",
 		"name": "ChamberosV2",
 		"description": "Spring Boot Basic Application",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -13,8 +13,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"console.log(pm.response.json())",
-							"pm.environment.set('CURRENT_USER_ID', pm.response.json());"
+							"// console.log(pm.response.json())",
+							"// pm.environment.set('CURRENT_USER_ID', pm.response.json());"
 						],
 						"type": "text/javascript"
 					}
@@ -30,74 +30,23 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\": \"wainer\",\n\t\"password\": \"wainer\"\n}"
+					"raw": "{\n\t\"fullName\": \"Wainer Rodriguez Bonilla\",\n    \"email\": \"2011.peswainer.1996@gmail.com\",\n\t\"password\": \"wainer\",\n    \"location\": {\n        \"y\": 48.856614,\n        \"x\": 2.352221\n    }\n}"
 				},
 				"url": {
-					"raw": "{{SB_BASE_URL}}/user/create",
+					"raw": "{{SB_BASE_URL}}/user/register",
 					"host": [
 						"{{SB_BASE_URL}}"
 					],
 					"path": [
 						"user",
-						"create"
+						"register"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "User Auth",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const response = pm.response;",
-							"const token = response.headers.get('Authorization');",
-							"pm.environment.set(\"TOKEN\", token);"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"username\": \"wainer\",\n\t\"password\": \"wainer\"\n}"
-				},
-				"url": {
-					"raw": "{{SB_BASE_URL}}/authenticate",
-					"host": [
-						"{{SB_BASE_URL}}"
-					],
-					"path": [
-						"authenticate"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get All Contact",
+			"name": "Get User Get All",
 			"event": [
 				{
 					"listen": "test",
@@ -130,13 +79,71 @@
 					"raw": "{\n\t\"username\": \"wainer\",\n\t\"password\": \"wainer\"\n}"
 				},
 				"url": {
-					"raw": "{{SB_BASE_URL}}/contact/all",
+					"raw": "{{SB_BASE_URL}}/user/get-all?fullName=Wainer Rodriguez Bonilla",
 					"host": [
 						"{{SB_BASE_URL}}"
 					],
 					"path": [
-						"contact",
-						"all"
+						"user",
+						"get-all"
+					],
+					"query": [
+						{
+							"key": "fullName",
+							"value": "Wainer Rodriguez Bonilla"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response;",
+							"const token = response.headers.get('Authorization');",
+							"const JsonBody = response.toJSON();",
+							"const id = JsonBody['id']",
+							"pm.environment.set(\"TOKEN\", token);",
+							"pm.environment.set(\"AUTH_USER_ID\", id);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"2011.peswainer.1996@gmail.com\",\n\t\"password\": \"wainer\"\n}"
+				},
+				"url": {
+					"raw": "{{SB_BASE_URL}}/user/authenticate",
+					"host": [
+						"{{SB_BASE_URL}}"
+					],
+					"path": [
+						"user",
+						"authenticate"
 					]
 				}
 			},
@@ -176,13 +183,75 @@
 					"raw": "{\n\t\"username\": \"wainer\",\n\t\"password\": \"wainer\"\n}"
 				},
 				"url": {
-					"raw": "{{SB_BASE_URL}}/user/{{CURRENT_USER_ID}}",
+					"raw": "{{SB_BASE_URL}}/user/get?userId={{AUTH_USER_ID}}",
 					"host": [
 						"{{SB_BASE_URL}}"
 					],
 					"path": [
 						"user",
-						"{{CURRENT_USER_ID}}"
+						"get"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "{{AUTH_USER_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Get By Radius In KM",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// console.log(pm.response.json())",
+							"// pm.environment.set('CURRENT_USER_ID', pm.response.json());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"fullName\": \"Wainer Rodriguez Bonilla\",\n    \"email\": \"2011.peswainer.1996@gmail.com\",\n\t\"password\": \"wainer\",\n    \"coordinates\": {\n            \"y\": 9.930834,\n            \"x\": -84.091308\n    }\n}"
+				},
+				"url": {
+					"raw": "{{SB_BASE_URL}}/user/get-location-near?latitude=48.856614&longitude=2.352221&radiusInKilometers=10",
+					"host": [
+						"{{SB_BASE_URL}}"
+					],
+					"path": [
+						"user",
+						"get-location-near"
+					],
+					"query": [
+						{
+							"key": "latitude",
+							"value": "48.856614"
+						},
+						{
+							"key": "longitude",
+							"value": "2.352221"
+						},
+						{
+							"key": "radiusInKilometers",
+							"value": "10"
+						}
 					]
 				}
 			},

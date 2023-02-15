@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import com.chamberos.chamberosapi.domain.User;
 import com.chamberos.chamberosapi.infrastructure.inputport.UserInputPort;
 import org.springframework.http.HttpStatus;
@@ -40,7 +43,21 @@ public class UserAPI {
     }
 
     @GetMapping(value = "get-all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<User> getAll() {
-        return customerInputPort.getAll();
+    public List<User> getAll(
+            @RequestParam(defaultValue = "fullName") String sortKey,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestParam String fullName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Sort.Direction direction = sortDirection == "asc" ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, "fullName");
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return customerInputPort.getAll(fullName, pageable);
     }
+
+    @GetMapping(value = "get-location-near", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<User> findByLocationNear(@RequestParam double latitude, double longitude, double radiusInKilometers) {
+        return customerInputPort.findByLocationNear(latitude, longitude, radiusInKilometers);
+    }
+
 }

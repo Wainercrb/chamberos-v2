@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Location {
+public class Profession {
    private int lat;
    private int lgn;
 }
