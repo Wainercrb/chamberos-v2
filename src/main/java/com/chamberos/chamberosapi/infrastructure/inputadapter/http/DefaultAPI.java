@@ -1,4 +1,4 @@
-package com.chamberos.chamberosapi.infra.inputadapter.http;
+package com.chamberos.chamberosapi.infrastructure.inputadapter.http;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
