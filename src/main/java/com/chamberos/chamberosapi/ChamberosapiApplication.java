@@ -9,5 +9,4 @@ public class ChamberosapiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ChamberosapiApplication.class, args);
 	}
-
 }
