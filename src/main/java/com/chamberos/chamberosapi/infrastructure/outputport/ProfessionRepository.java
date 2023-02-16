@@ -8,5 +8,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface ProfessionRepository extends MongoRepository<Profession, String> {
     public Profession getById(String id);
 
-    public List<Profession> findByName(String name, Pageable pageable);
+    public List<Profession> findByNameRegex(String nameRegex, Pageable pageable);
 }

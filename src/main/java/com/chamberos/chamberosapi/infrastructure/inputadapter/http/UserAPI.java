@@ -66,9 +66,11 @@ public class UserAPI {
     public ResponseEntity<?> findByLocationNear(
             @RequestParam @NotNull(message = "Parameter 'latitude' is required") double latitude,
             @RequestParam @NotNull(message = "Parameter 'longitude' is required") double longitude,
-            @RequestParam @NotNull(message = "Parameter 'radiusInKilometers' is required") double radiusInKilometers) {
+            @RequestParam @NotNull(message = "Parameter 'radiusInKilometers' is required") double radiusInKilometers,
+            @RequestParam @NotNull(message = "Parameter 'professionId' is required") String professionIds) {
 
-        return new ResponseEntity<>(customerInputPort.findByLocationNear(latitude, longitude, radiusInKilometers),
+        return new ResponseEntity<>(
+                customerInputPort.findByLocationNear(latitude, longitude, radiusInKilometers, professionIds),
                 HttpStatus.OK);
     }
 

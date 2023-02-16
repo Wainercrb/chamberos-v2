@@ -26,6 +26,6 @@ public class ProfessionUseCase implements ProfessionInputPort {
 
     @Override
     public List<Profession> getAll(String name, Pageable pageable) {
-        return professionRepository.findByName(name, pageable);
+        return professionRepository.findByNameRegex(name, pageable);
     }
 }

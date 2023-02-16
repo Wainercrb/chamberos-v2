@@ -1,5 +1,6 @@
 package com.chamberos.chamberosapi.domain;
 
+import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -10,6 +11,7 @@ import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.geo.Point;
 import com.chamberos.chamberosapi.config.validations.ValidPoint;
 import lombok.AllArgsConstructor;
@@ -47,4 +49,9 @@ public class User {
    @ValidPoint
    @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
    private Point location;
+
+   @NotNull(message = "Professions cannot be null")
+   @Valid
+   @DocumentReference(lazy = true)
+   private List<Profession> professions;
 }

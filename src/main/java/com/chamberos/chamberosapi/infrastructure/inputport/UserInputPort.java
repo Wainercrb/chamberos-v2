@@ -9,5 +9,5 @@ public interface UserInputPort {
     public User authenticate(User user);
     public User getById(String userId);
     public List<User> getAll(String fullName, Pageable pageable);
-    public List<User> findByLocationNear(double latitude, double longitude, double radiusInKilometers);
+    public List<User> findByLocationNear(double latitude, double longitude, double radiusInKilometers, String professionIds);
 }
