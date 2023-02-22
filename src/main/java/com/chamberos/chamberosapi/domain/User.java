@@ -30,28 +30,37 @@ public class User {
    @Id
    private String id;
 
-   @NotBlank(message = "Full Name cannot be blank")
+   @NotBlank(message = "User Full Name cannot be blank")
    @Size(min = 1, max = 50)
    private String fullName;
 
-   @NotBlank(message = "Email cannot be blank")
+   @NotBlank(message = "User Email cannot be blank")
    @Size(min = 1, max = 50)
    @Email
    @Indexed(unique = true)
    private String email;
 
-   @NotBlank(message = "Password cannot be blank")
+   @NotBlank(message = "User Password cannot be blank")
    @Size(min = 1, max = 50)
    private String password;
 
-   @NotNull(message = "Location cannot be null")
+   @NotBlank(message = "User Is Active cannot be blank")
+   @Size(min = 1, max = 50)
+   private Boolean isActive;
+
+   @NotNull(message = "User Location cannot be null")
    @Valid
    @ValidPoint
    @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
    private Point location;
 
-   @NotNull(message = "Professions cannot be null")
+   @NotNull(message = "User Professions cannot be null")
    @Valid
    @DocumentReference(lazy = true)
    private List<Profession> professions;
+
+   @NotNull(message = "User Roles cannot be null")
+   @Valid
+   @DocumentReference(lazy = true)
+   private List<UserRole> roles;
 }
