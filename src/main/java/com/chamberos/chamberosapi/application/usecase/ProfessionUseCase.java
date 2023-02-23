@@ -1,10 +1,10 @@
-package com.chamberos.chamberosapi.application;
+package com.chamberos.chamberosapi.application.usecase;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import com.chamberos.chamberosapi.domain.Profession;
+import com.chamberos.chamberosapi.domain.model.Profession;
 import com.chamberos.chamberosapi.infrastructure.inputport.ProfessionInputPort;
 import com.chamberos.chamberosapi.infrastructure.outputport.ProfessionRepository;
 

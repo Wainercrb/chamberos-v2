@@ -1,4 +1,4 @@
-package com.chamberos.chamberosapi.domain;
+package com.chamberos.chamberosapi.domain.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,5 +19,5 @@ public class Profession {
    private String id;
    private String name;
 
-   private Role role;
+   private ProfessionType type;
 }

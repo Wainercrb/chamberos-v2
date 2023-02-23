@@ -1,4 +1,4 @@
-package com.chamberos.chamberosapi.domain;
+package com.chamberos.chamberosapi.domain.model;
 
 import java.util.List;
 import javax.validation.constraints.NotBlank;
@@ -12,8 +12,8 @@ import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
+import com.chamberos.chamberosapi.domain.customvalidations.ValidPoint;
 import org.springframework.data.geo.Point;
-import com.chamberos.chamberosapi.config.validations.ValidPoint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,12 +40,16 @@ public class User {
    @Indexed(unique = true)
    private String email;
 
+   @NotBlank(message = "User Username cannot be blank")
+   @Size(min = 1, max = 50)
+   @Indexed(unique = true)
+   private String username;
+
    @NotBlank(message = "User Password cannot be blank")
    @Size(min = 1, max = 50)
    private String password;
 
-   @NotBlank(message = "User Is Active cannot be blank")
-   @Size(min = 1, max = 50)
+   @NotNull(message = "User Is Active cannot be blank")
    private Boolean isActive;
 
    @NotNull(message = "User Location cannot be null")

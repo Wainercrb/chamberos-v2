@@ -1,4 +1,4 @@
-package com.chamberos.chamberosapi.config.exceptions;
+package com.chamberos.chamberosapi.application.exception;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +24,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 
         List<String> errors = new ArrayList<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> errors.add(error.getDefaultMessage()));
-        return new ResponseEntity<>(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponseList(errors), HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
             WebRequest request) {
 
         String error = ex.getParameterName() + " parameter is missing";
-        ErrorResponse errors = new ErrorResponse(Collections.singletonList(error));
+        ErrorResponseList errors = new ErrorResponseList(Collections.singletonList(error));
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 

@@ -1,11 +1,9 @@
 package com.chamberos.chamberosapi.infrastructure.inputadapter.http;
 
 import java.util.List;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,8 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import com.chamberos.chamberosapi.domain.User;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import com.chamberos.chamberosapi.domain.model.User;
+import com.chamberos.chamberosapi.infrastructure.inputport.RefreshTokenInputPort;
 import com.chamberos.chamberosapi.infrastructure.inputport.UserInputPort;
+import com.chamberos.chamberosapi.infrastructure.security.jwt.JwtUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,23 +26,23 @@ import org.springframework.validation.annotation.Validated;
 @RequestMapping("user")
 @Validated
 public class UserAPI {
+
+    @Value("${app.jwtRefreshExpirationMs}")
+    private Long refreshTokenDurationMs;
+
+    @Autowired(required = true)
+    AuthenticationManager authenticationManager;
+
     @Autowired()
     UserInputPort customerInputPort;
 
-    @PostMapping(value = "register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> create(@Valid @RequestBody User user) {
-        return new ResponseEntity<>(customerInputPort.register(user), HttpStatus.CREATED);
-    }
+    @Autowired()
+    RefreshTokenInputPort refreshTokenInputPort;
 
-    @PostMapping(value = "authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> authenticate(@RequestBody User user) {
-        User signedUser = customerInputPort.authenticate(user);
-        if (signedUser == null) {
-            return new ResponseEntity<>("Bad email or password", HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(signedUser, HttpStatus.OK);
-    }
+    @Autowired(required = true)
+    JwtUtils jwtUtils;
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "get", produces = MediaType.APPLICATION_JSON_VALUE)
     public User get(
             @RequestParam @NotNull(message = "Parameter 'userId' is required") String userId) {
@@ -48,6 +50,7 @@ public class UserAPI {
         return customerInputPort.getById(userId);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "get-all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getAll(
             @RequestParam(defaultValue = "") String fullName,
@@ -62,6 +65,7 @@ public class UserAPI {
         return customerInputPort.getAll(fullName, pageable);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "get-location-near", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> findByLocationNear(
             @RequestParam @NotNull(message = "Parameter 'latitude' is required") double latitude,
@@ -73,5 +77,4 @@ public class UserAPI {
                 customerInputPort.findByLocationNear(latitude, longitude, radiusInKilometers, professionIds),
                 HttpStatus.OK);
     }
-
 }

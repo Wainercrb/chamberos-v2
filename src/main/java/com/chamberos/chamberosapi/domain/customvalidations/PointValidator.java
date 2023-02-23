@@ -1,4 +1,4 @@
-package com.chamberos.chamberosapi.config.validations;
+package com.chamberos.chamberosapi.domain.customvalidations;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

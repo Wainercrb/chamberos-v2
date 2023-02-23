@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/docs")
 public class DefaultAPI {
    
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<String> getRoot() {
         return new ResponseEntity<>("Chamberos API", HttpStatus.OK);
     }

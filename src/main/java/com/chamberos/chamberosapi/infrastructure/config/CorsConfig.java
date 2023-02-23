@@ -1,4 +1,4 @@
-package com.chamberos.chamberosapi.config;
+package com.chamberos.chamberosapi.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

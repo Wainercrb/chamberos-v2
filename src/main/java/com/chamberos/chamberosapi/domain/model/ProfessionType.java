@@ -1,8 +1,8 @@
-package com.chamberos.chamberosapi.domain;
+package com.chamberos.chamberosapi.domain.model;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
-public enum Role {
+public enum ProfessionType {
     @Field("fulltime")
     FULLTIME,
 
