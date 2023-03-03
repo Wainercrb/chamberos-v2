@@ -97,8 +97,11 @@ public class AuthAPI {
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
 
+        User newUser = userInputPort.register(user);
+        newUser.setPassword(null);
+        
         return new ResponseEntity<>(
-                userInputPort.register(user),
+                newUser,
                 HttpStatus.CREATED);
     }
 

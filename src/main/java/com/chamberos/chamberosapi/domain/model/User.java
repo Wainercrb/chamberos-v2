@@ -1,5 +1,6 @@
 package com.chamberos.chamberosapi.domain.model;
 
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import com.chamberos.chamberosapi.domain.customvalidations.ValidPoint;
+import com.chamberos.chamberosapi.utils.AppConstants;
 import org.springframework.data.geo.Point;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,22 +33,22 @@ public class User {
    private String id;
 
    @NotBlank(message = "User Full Name cannot be blank")
-   @Size(min = 1, max = 50)
+   @Size(min = 3, max = 50)
    private String fullName;
 
    @NotBlank(message = "User Email cannot be blank")
-   @Size(min = 1, max = 50)
+   @Size(min = 3, max = 50)
    @Email
    @Indexed(unique = true)
    private String email;
 
    @NotBlank(message = "User Username cannot be blank")
-   @Size(min = 1, max = 50)
+   @Size(min = 3, max = 50)
    @Indexed(unique = true)
    private String username;
 
    @NotBlank(message = "User Password cannot be blank")
-   @Size(min = 1, max = 50)
+   @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$", message = AppConstants.PASSWORD_REGEX_ERROR_MESSAGE)
    private String password;
 
    @NotNull(message = "User Is Active cannot be blank")
