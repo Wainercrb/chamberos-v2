@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/")
 public class DefaultAPI {
-   
     @GetMapping("/")
     public ResponseEntity<String> getRoot() {
         return new ResponseEntity<>("Chamberos API", HttpStatus.OK);
