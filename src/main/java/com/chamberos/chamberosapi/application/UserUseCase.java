@@ -5,7 +5,6 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import com.chamberos.chamberosapi.domain.User;
 import com.chamberos.chamberosapi.utils.CustomObjectId;
 import com.chamberos.chamberosapi.infrastructure.inputport.UserInputPort;
@@ -13,11 +12,12 @@ import com.chamberos.chamberosapi.infrastructure.outputport.UserRepository;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class UserUseCase implements UserInputPort {
 
-    @Autowired(required = true)
+    @Autowired
     UserRepository userRepository;
 
     @Autowired

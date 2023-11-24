@@ -18,6 +18,5 @@ public class Profession {
    @Id
    private String id;
    private String name;
-
    private Role role;
 }

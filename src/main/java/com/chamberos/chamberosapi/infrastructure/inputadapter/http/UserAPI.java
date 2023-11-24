@@ -3,6 +3,7 @@ package com.chamberos.chamberosapi.infrastructure.inputadapter.http;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,5 +74,4 @@ public class UserAPI {
                 customerInputPort.findByLocationNear(latitude, longitude, radiusInKilometers, professionIds),
                 HttpStatus.OK);
     }
-
 }

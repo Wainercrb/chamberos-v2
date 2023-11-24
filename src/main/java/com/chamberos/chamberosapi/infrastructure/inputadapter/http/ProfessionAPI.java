@@ -20,7 +20,8 @@ import com.chamberos.chamberosapi.infrastructure.inputport.ProfessionInputPort;
 @RestController
 @RequestMapping("profession")
 public class ProfessionAPI {
-    @Autowired()
+
+    @Autowired
     ProfessionInputPort professionInputPort;
 
     @PostMapping(value = "create", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,10 +41,11 @@ public class ProfessionAPI {
             @RequestParam String name,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        Sort.Direction direction = sortDirection == "asc" ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+        Sort.Direction direction = "asc".equals(sortDirection) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, "name");
         Pageable pageable = PageRequest.of(page, size, sort);
+
         return professionInputPort.getAll(name, pageable);
     }
-
 }
